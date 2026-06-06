@@ -10,18 +10,12 @@ use App\Models\Voiture;
 use Carbon\Carbon;
 use App\Models\Reservation;
 use Barryvdh\DomPDF\Facade\Pdf;
-use App\Helpers\ReservationHelper;
 
 
 
 class ReservationController extends Controller
 {
-    
-    public function __construct()
-    {
-        ReservationHelper::verifierReservationsExpirees();
-    }
-    
+            
     public function create(Voiture $voiture)
    {
     return view('client.reservations.create', compact('voiture'));
@@ -38,13 +32,7 @@ public function store(Request $request, Voiture $voiture)
 
     // Vérifier chevauchement
     $existe = Reservation::where('voiture_id', $voiture->id)
-    ->where(function ($query) {
-        $query->where('statut', 'confirmé')
-              ->orWhere(function ($q) {
-                  $q->where('statut', 'en attente')
-                    ->where('created_at', '>=', now()->subDay()); // ignore celles créées il y a + de 24h
-              });
-    })
+    ->where('statut', 'confirmé')
     ->where(function($q) use ($request) {
         $q->whereBetween('date_debut', [$request->date_debut, $request->date_fin])
           ->orWhereBetween('date_fin', [$request->date_debut, $request->date_fin])

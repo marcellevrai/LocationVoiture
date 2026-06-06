@@ -24,7 +24,6 @@
                             if ($reservation->avec_chauffeur && $voiture->prix_chauffeur_jour) {
                                 $total += $voiture->prix_chauffeur_jour * $jours;
                             }
-                            $estExpire = $reservation->statut == 'en attente' && $reservation->created_at->diffInHours(now()) >= 24;
                         @endphp
 
                         <div class="col-md-6 col-lg-4 mb-4">
@@ -54,18 +53,24 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <span class="badge 
-                                            @if($reservation->statut == 'confirmé') bg-success 
-                                            @elseif($estExpire) bg-danger 
-                                            @else bg-warning text-dark @endif 
-                                            fs-6 px-3 py-2 rounded-pill shadow-sm">
-                                            @if($estExpire)
-                                                <i class="icofont icofont-warning-alt"></i> Expirée (non payée)
+                                        <span class="badge px-3 py-2 rounded-pill fs-6 shadow-sm
+                                            @if($reservation->statut == 'confirmé')
+                                                bg-success
+                                            @elseif($reservation->statut == 'en attente')
+                                                bg-warning text-dark
                                             @else
-                                                <i class="icofont icofont-check-circled"></i> {{ ucfirst($reservation->statut) }}
+                                                bg-secondary
                                             @endif
-
+                                        ">
+                                            @if($reservation->statut == 'confirmé')
+                                                <i class="icofont icofont-check-circled"></i> Confirmée
+                                            @elseif($reservation->statut == 'en attente')
+                                                <i class="icofont icofont-clock-time"></i> En attente de paiement
+                                            @elseif($reservation->statut == 'annulée')
+                                                <i class="icofont icofont-close-circled"></i> Annulée
+                                            @endif
                                         </span>
+
                                         @if($reservation->statut === 'confirmé')
                                         <a href="{{ route('reservation.facturePdf', $reservation->id) }}" 
                                             class="btn btn-sm px-3 py-1 text-white" 
@@ -78,7 +83,7 @@
 
                                     </div>
 
-                                    @if($reservation->statut == 'en attente' && !$estExpire)
+                                    @if($reservation->statut == 'en attente')
                                         <div class="text-end d-flex gap-2 justify-content-end">      
                                             <button class="btn btn-outline-primary btn-sm mr-5" data-bs-toggle="modal" data-bs-target="#paiementModal">
                                                 <i class="icofont icofont-credit-card"></i> Payer maintenant

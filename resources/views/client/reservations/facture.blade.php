@@ -38,7 +38,7 @@
                 </ul>
 
                 <div class="text-end">
-                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#paiementModal">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#paiementModal" data-id="{{ $reservation->id }}">
                         Payer maintenant
                     </button>
                 </div>

@@ -8,14 +8,10 @@ use App\Models\proprietaire;
 use App\Models\Reservation;
 use App\Models\Voiture;
 use Illuminate\Http\Request;
-use App\Helpers\ReservationHelper;
 
 class AdminDashboardController extends Controller
 {
-     public function __construct()
-    {
-        ReservationHelper::verifierReservationsExpirees();
-    }
+    
     public function index(){
         $totalClients = Client::count();
         $totalReservations = Reservation::count();

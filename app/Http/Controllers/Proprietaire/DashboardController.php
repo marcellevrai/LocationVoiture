@@ -4,14 +4,10 @@ namespace App\Http\Controllers\Proprietaire;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use app\helpers\ReservationHelper;
 
 class DashboardController extends Controller
 {
-    public function __construct()
-    {
-        ReservationHelper::verifierReservationsExpirees();
-    }
+    
     
     public function dashboard()
     {

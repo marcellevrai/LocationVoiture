@@ -4,16 +4,12 @@ namespace App\Http\Controllers\Proprietaire;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Helpers\ReservationHelper;
 
 
 class ReservationController extends Controller
 {
     
-    public function __construct()
-    {
-        ReservationHelper::verifierReservationsExpirees();
-    }
+    
     
     public function index(Request $request)
 {
